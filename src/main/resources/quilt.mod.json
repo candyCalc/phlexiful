@@ -1,0 +1,38 @@
+{
+    "schema_version": 1,
+    "quilt_loader": {
+        "group": "${group}",
+        "id": "phlexiful",
+        "version": "${version}",
+        "metadata": {
+            "name": "Phlexiful",
+            "description": "Little additions and some mod compatibility",
+            "contributors": {
+                "crimew": "Owner"
+            },
+            "contact": {},
+            "icon": "assets/example_mod/icon.png",
+            "license": "MIT"
+        },
+        "intermediate_mappings": "net.fabricmc:intermediary",
+        "entrypoints": {
+            "init": "io.github.candycalc.phlexiful.Phlexiful"
+        },
+        "depends": [
+            {
+                "id": "quilt_loader",
+                "versions": ">=0.19.1"
+            },
+            {
+                "id": "quilted_fabric_api",
+                "versions": ">=0.0.0",
+                "I'm gonna lose it": "what the hell is the version number for qfapi"
+            },
+            {
+                "id": "minecraft",
+                "versions": ">=1.19.2"
+            }
+        ]
+    },
+    "mixin": "phlexiful.mixins.json"
+}
