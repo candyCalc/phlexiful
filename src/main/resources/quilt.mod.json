@@ -32,10 +32,10 @@
                 "id": "minecraft",
                 "versions": ">=1.19.2"
             },
-            {
-                "id": "hexcasting",
-                "versions": ">=0.10.3"
-            }
+						{
+							"id": "hexcasting",
+							"versions": ">=0.10.3"
+						}
         ]
     },
     "mixin": "phlexiful.mixins.json"

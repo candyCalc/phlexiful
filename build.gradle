@@ -1,6 +1,8 @@
 plugins {
 	id 'maven-publish'
 	alias libs.plugins.quilt.loom
+	id 'org.jetbrains.kotlin.jvm'
+
 }
 
 base {
@@ -11,13 +13,34 @@ version = "$project.version+${libs.versions.minecraft.get()}"
 group = project.maven_group
 
 repositories {
+	mavenCentral()
 	maven { url "https://maven.blamejared.com/"}
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/releases/" }
-	maven { url 'https://maven.ladysnake.org/releases' }
-	maven { url 'https://maven.jamieswhiteshirt.com/libs-release/'}
-	//maven { url 'https://modrinth.com/maven'}
-	//maven { url 'https://jitpack.io' }
+	maven { url "https://jitpack.io" }
+	maven { url "https://squiddev.cc/maven" }
+	maven { url "https://mvn.devos.one/snapshots/" }
+	maven { url "https://maven.theillusivec4.top/" }
+	maven {
+		name "GeckoLib"
+		url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+	}
+	maven {
+		name "entity reach"
+		url 'https://maven.jamieswhiteshirt.com/libs-release/'
+	}
+	maven {
+		name "LadySnake Mods"
+		url 'https://maven.ladysnake.org/releases'
+	}
+	maven {
+		name "Modrinth"
+		url "https://api.modrinth.com/maven"
+	}
+	maven {
+		name "Kotlin for Forge"
+		url "https://thedarkcolour.github.io/KoltinForForge"
+	}
 
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
@@ -60,13 +83,10 @@ dependencies {
 	modImplementation libs.quilted.fabric.api
 	// modImplementation libs.bundles.quilted.fabric.api // If you wish to use Fabric API's deprecated modules, you can replace the above line with this one
 
-	modImplementation("at.petra-k.hexcasting:hexcasting-fabric-1.19.2:0.10.3") 					{ transitive = false }
-	modImplementation("net.fabricmc:fabric-language-kotlin:1.11.0+kotlin.2.0.0") 				{ transitive = false }
-	modImplementation("vazkii.patchouli:Patchouli:1.19.2-77") 									{ transitive = false }
-	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2") { transitive = true }
-	modImplementation("at.petra-k.paucal:paucal-fabric-1.19.2:0.5.0") 							{ transitive = false }
+	//modImplementation("org.jetBrains.kotlin:kotlin-stdlib-jdk8")
 
-	modApi("me.shedaniel.cloth:cloth-config-fabric:8.2.88")										{ transitive = false }
+	modImplementation("at.petra-k.hexcasting:hexcasting-fabric-1.19.2:0.10.3") {}
+	//god is not real. only gradle
 }
 
 processResources {
@@ -81,6 +101,12 @@ tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = 'UTF-8'
 	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
 	it.options.release = 17
+}
+
+compileKotlin {
+	kotlinOptions {
+		jvmTarget = "17"
+	}
 }
 
 java {
