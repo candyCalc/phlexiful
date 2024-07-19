@@ -1,6 +1,7 @@
 package io.github.candycalc.phlexiful.casting;
 
 import io.github.candycalc.phlexiful.effect.ModEffects;
+import io.github.candycalc.phlexiful.effect.SpellLacedStatusEffectInstance;
 
 import at.petrak.hexcasting.api.misc.MediaConstants;
 import at.petrak.hexcasting.api.spell.*;
@@ -40,14 +41,14 @@ public class OpHexxedEffect implements SpellAction {
 		// Pattern arguments
 		LivingEntity target = OperatorUtils.getLivingEntityButNotArmorStand(args, 0, getArgc());
 		List<SpellList> spell = List.of(OperatorUtils.getList(args, 1, getArgc()));
-		Double duration = OperatorUtils.getPositiveDouble(args, 2, getArgc());
-		Double battery = OperatorUtils.getPositiveDouble(args, 3, getArgc());
+		double duration = OperatorUtils.getPositiveDouble(args, 2, getArgc());
+		double battery = OperatorUtils.getPositiveDouble(args, 3, getArgc());
 
 		//check if target is in bounds
 		context.assertEntityInRange(target);
 
 		//calculate cost
-		int cost = MediaConstants.DUST_UNIT * (battery.intValue() + 10);
+		int cost = MediaConstants.DUST_UNIT * (((int) battery) + 10);
 
 		return new Triple<RenderedSpell, Integer, List<ParticleSpray>>(
 			new Spell(target, spell, duration, battery),
@@ -59,10 +60,10 @@ public class OpHexxedEffect implements SpellAction {
 	public class Spell implements RenderedSpell {
 		private LivingEntity target;
 		private List<SpellList> spell;
-		private Double duration;
-		private Double battery;
+		private double duration;
+		private double battery;
 
-		public Spell(LivingEntity target, List<SpellList> spell, Double duration, Double battery) {
+		public Spell(LivingEntity target, List<SpellList> spell, double duration, double battery) {
 			this.target = target;
 			this.spell = spell;
 			this.duration = duration;
@@ -71,7 +72,11 @@ public class OpHexxedEffect implements SpellAction {
 
 		@Override
 		public void cast(@NotNull CastingContext context) {
-			StatusEffectInstance effectInstance = new StatusEffectInstance(ModEffects.HEXXED, duration.intValue() * 20, 0);
+			//make particles slightly transparent if spell targets yourself
+			boolean ambient = (context.getCaster() == target);
+			//create effect instance
+			StatusEffectInstance effectInstance = new SpellLacedStatusEffectInstance(ModEffects.HEXXED, (int) duration * 20, 0, ambient, true, context.getCaster(), spell, battery);
+			//apply effect
 			target.addStatusEffect(effectInstance);
 		}
 	}
