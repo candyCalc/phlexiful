@@ -3,6 +3,7 @@ package io.github.candycalc.phlexiful.mixin;
 import io.github.candycalc.phlexiful.util.IEntityDataSaver;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,7 +31,7 @@ public abstract class ModEntityDataSaverMixin implements IEntityDataSaver {
 
 	@Inject(method = "readNbt", at = @At("HEAD"))
 	protected void injectReadMethod(NbtCompound nbt, CallbackInfo info) {
-		if (nbt.contains("phlexical:hexxed", 10)) {
+		if (nbt.contains("phlexical:hexxed", NbtElement.COMPOUND_TYPE)) {
 			persistentData = nbt.getCompound("phlexical:hexxed");
 		}
 	}

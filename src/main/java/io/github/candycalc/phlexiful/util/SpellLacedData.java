@@ -59,7 +59,8 @@ public class SpellLacedData {
 	//reading stuff
 	public static UUID getCasterUuid(Object target) {
 		IEntityDataSaver data = (IEntityDataSaver) target;
-		return data.getPersistentData().getUuid("caster");
+		NbtCompound nbt = data.getPersistentData();
+		return nbt.getUuid("caster");
 	}
 
 	public static List<Iota> getSpell(Object target, ServerWorld world) {
@@ -77,6 +78,17 @@ public class SpellLacedData {
 
 	public static double getBattery(Object target) {
 		IEntityDataSaver data = (IEntityDataSaver) target;
-		return data.getPersistentData().getDouble("battery");
+		NbtCompound nbt = data.getPersistentData();
+		return nbt.getDouble("battery");
+	}
+
+	//boolean stuff
+	public static boolean hasLacedSpell(Object target) {
+		IEntityDataSaver data = (IEntityDataSaver) target;
+		NbtCompound nbt = data.getPersistentData();
+		boolean hasCaster = NBTHelper.hasUUID(nbt, "caster");
+		boolean hasSpell = NBTHelper.hasList(nbt, "patterns");
+		boolean hasBattery = NBTHelper.hasDouble(nbt, "battery");
+		return hasCaster & hasSpell & hasBattery;
 	}
 }
