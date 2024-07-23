@@ -1,16 +1,20 @@
 package io.github.candycalc.phlexiful.casting;
 
-import io.github.candycalc.phlexiful.effect.ModEffects;
-import io.github.candycalc.phlexiful.effect.SpellLacedStatusEffectInstance;
-
+import at.petrak.hexcasting.api.utils.NBTHelper;
 import at.petrak.hexcasting.api.misc.MediaConstants;
 import at.petrak.hexcasting.api.spell.*;
 import at.petrak.hexcasting.api.spell.casting.CastingContext;
 import at.petrak.hexcasting.api.spell.casting.eval.SpellContinuation;
 import at.petrak.hexcasting.api.spell.iota.Iota;
 
+import io.github.candycalc.phlexiful.Phlexiful;
+import io.github.candycalc.phlexiful.util.IEntityDataSaver;
+import io.github.candycalc.phlexiful.util.SpellLacedData;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 
 import kotlin.Triple;
@@ -19,7 +23,16 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 public class OpHexxedEffect implements SpellAction {
-	public OpHexxedEffect() {}
+	private StatusEffect statusEffect;
+	private int amplifier;
+
+	public OpHexxedEffect(
+		StatusEffect statusEffect,
+		int amplifier
+	) {
+		this.statusEffect = statusEffect;
+		this.amplifier = amplifier;
+	}
 
 	@Override
 	public int getArgc() {return 4;}
@@ -75,9 +88,14 @@ public class OpHexxedEffect implements SpellAction {
 			//make particles slightly transparent if spell targets yourself
 			boolean ambient = (context.getCaster() == target);
 			//create effect instance
-			StatusEffectInstance effectInstance = new SpellLacedStatusEffectInstance(ModEffects.HEXXED, (int) duration * 20, 0, ambient, true, context.getCaster(), spell, battery);
+			StatusEffectInstance effectInstance = new StatusEffectInstance(statusEffect, (int) duration * 20, amplifier, ambient, true); // context.getCaster(), spell, battery);
 			//apply effect
 			target.addStatusEffect(effectInstance);
+
+			//write data to nbt
+			SpellLacedData.setCaster(target, context.getCaster());
+			SpellLacedData.setSpell(target, spell);
+			SpellLacedData.setBattery(target, battery);
 		}
 	}
 

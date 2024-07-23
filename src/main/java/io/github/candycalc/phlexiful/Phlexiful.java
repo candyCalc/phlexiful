@@ -10,7 +10,7 @@ import io.github.candycalc.phlexiful.effect.ModEffects;
 
 public class Phlexiful implements ModInitializer {
     public static final String MOD_ID = "phlexiful";
-    public static final Logger LOGGER = LoggerFactory.getLogger("phlexiful");
+    public static final Logger LOGGER = LoggerFactory.getLogger("Phlexiful");
 
 	public static void logMessage(String message) {
 		LOGGER.info(message);

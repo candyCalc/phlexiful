@@ -16,6 +16,6 @@ public class ModEffects extends StatusEffects {
     }
 
     public static void registerEffect() {
-        HEXXED = register("hexxed", (new HexxedEffect(StatusEffectType.HARMFUL, 13524717)));
+        HEXXED = register("hexxed", (new HexxedEffect(StatusEffectType.HARMFUL, 11534517)));
     }
 }
